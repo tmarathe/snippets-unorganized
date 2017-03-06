@@ -26,10 +26,15 @@ def coin_flip_probability(num_flips, num_heads):
     # below we assume a fair coin (i.e. p = 0.5)
 
     p = 0.5
-    nCk = math.factorial(num_flips) / (math.factorial(num_heads) * \
-            math.factorial(num_flips - num_heads))
-    
-    return nCk * pow(p, num_heads) * pow(p, num_flips - num_heads)
+
+
+    pdf_sum = 0
+    for i in range(num_heads, num_flips+1):
+        nCk = math.factorial(num_flips) / (math.factorial(i) * \
+                                           math.factorial(num_flips - i))
+        pdf_sum += nCk * pow(p, i) * pow(p, num_flips - i)
+
+    return pdf_sum
   
 
 
