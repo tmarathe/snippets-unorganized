@@ -1,6 +1,7 @@
 import random
 import sys
 import math
+import scipy.stats
 
 def matching_parentheses(str):
     c = 0
@@ -24,10 +25,7 @@ def coin_flip_probability(num_flips, num_heads):
     # given n flips, k heads, probability is:
     # (n choose k) p^n (1-p)^(n-k)
     # below we assume a fair coin (i.e. p = 0.5)
-
     p = 0.5
-
-
     pdf_sum = 0
     for i in range(num_heads, num_flips+1):
         nCk = math.factorial(num_flips) / (math.factorial(i) * \
@@ -35,8 +33,17 @@ def coin_flip_probability(num_flips, num_heads):
         pdf_sum += nCk * pow(p, i) * pow(p, num_flips - i)
 
     return pdf_sum
-  
 
+def coin_flip_normal_approx(num_flips, num_heads):
+    p = 0.5
+    mean = num_flips * p
+    var = mean * (1 - p)
+
+    dist = scipy.stats.norm(mean, var)
+    sig = math.sqrt(var)
+
+    lim = (num_heads - mean)/sig
+    return dist.cdf(lim)
 
 if __name__ == '__main__':
     #inp = input("#>")
@@ -46,4 +53,5 @@ if __name__ == '__main__':
     #print(num_list)
     #print(find_missing_no(num_list))
     print(coin_flip_probability(400, 220) * 100)
+    print(coin_flip_normal_approx(400, 220) * 100)
     
