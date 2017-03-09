@@ -9,23 +9,25 @@ import re
 
 def add_sub_expression(tokens):
     result, tokens = mult_div_term(tokens)
-    if tokens[0] == '+':
-        tokens = tokens[1:]
-        result += mult_div_term(tokens)[0]
-    if tokens[0] == '-':
-        tokens = tokens[1:]
-        result -= mult_div_term(tokens)[0]
+    while tokens[0] in ['+', '-']:
+        if tokens[0] == '+':
+            tokens = tokens[1:]
+            result += mult_div_term(tokens)[0]
+        if tokens[0] == '-':
+            tokens = tokens[1:]
+            result -= mult_div_term(tokens)[0]
     return result
 
 
 def mult_div_term(tokens):
     result, tokens = atom(tokens)
-    if tokens[0] == '*':
-        tokens = tokens[1:]
-        result *= mult_div_term(tokens)[0]
-    elif tokens[0] == '/':
-        tokens = tokens[1:]
-        result /= mult_div_term(tokens)[0]
+    while tokens[0] in ['*', '/']:
+        if tokens[0] == '*':
+            tokens = tokens[1:]
+            result *= mult_div_term(tokens)[0]
+        elif tokens[0] == '/':
+            tokens = tokens[1:]
+            result /= mult_div_term(tokens)[0]
 
     return result, tokens
 
@@ -34,11 +36,12 @@ def atom(tokens):
     result = None
     if tokens[0].isdigit():
         result = float(tokens[0])
+        tokens = tokens[1:]
     elif tokens[0] == '(':
-        result = add_sub_expression(tokens[1:])
-    else:
-        return result, tokens
-    return result, tokens[1:]
+        tokens = tokens[1:]
+        result = add_sub_expression(tokens)
+        tokens = tokens[1:]
+    return result, tokens
 
 
 if __name__ == '__main__':
