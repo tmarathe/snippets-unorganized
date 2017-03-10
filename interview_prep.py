@@ -78,6 +78,22 @@ def coin_flip_normal_approx(num_flips, num_heads):
     lim = (num_heads - mean)/sig
     return dist.cdf(lim)
 
+# given a sorted list of numbers missing one element, find the missing number
+def missing_no(lst):
+    first = lst[0]
+    last = lst[len(lst) - 1]
+    mid = len(lst) // 2
+
+    if len(lst) == 2:
+        return first + 1
+
+    if lst[mid] - first != len(lst[:mid]):
+        #print(lst[:mid + 1])
+        return missing_no(lst[:mid + 1])
+    elif last - lst[mid] != len(lst[mid + 1:]):
+        #print(lst[mid:])
+        return missing_no(lst[mid:])
+
 if __name__ == '__main__':
     #inp = input("#>")
     #print(matching_parentheses(inp))
@@ -86,6 +102,7 @@ if __name__ == '__main__':
     rand_ind = random.randint(0,99)
     print(num_list[rand_ind])
     del num_list[rand_ind]
+    print(missing_no(num_list))
 
     #print(coin_flip_probability(400, 220) * 100)
     #print(coin_flip_normal_approx(400, 220) * 100)
