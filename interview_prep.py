@@ -3,6 +3,48 @@ import sys
 import math
 import scipy.stats
 
+
+# returns first unique character from a string. O(n)
+def first_unique(s):
+    d = {}
+    for c in s:
+        if c in d.keys():
+            d[c] += 1
+        else:
+            d[c] = 1
+
+    for c in s:
+        if d[c] == 1:
+            print(c)
+
+
+# 'melts' a histogram, returns path and number of steps until fully melted
+def melt_histogram(arr):
+    arr = [0] + arr + [0]
+    arr2 = arr[:]
+    counter = 0
+    while sum(arr2) != 0:
+        arr = arr2[:]
+        print(arr2)
+        for i in range(1, len(arr) - 1):
+            if arr[i] - 1 >= 0:
+                arr2[i] = min(arr[i - 1], arr[i] - 1, arr[i + 1])
+            else:
+                arr2[i] = 0
+        counter += 1
+    print(arr2)
+    print("Number of steps: {}".format(counter))
+
+# reverses a string in place. O(1) space, O(n) time.
+def reverse_in_place(s):
+    s = list(s)
+    for i, j in zip(range(len(s) // 2), range(len(s) - 1, -1, -1)):
+        temp = s[i]
+        s[i] = s[j]
+        s[j] = temp
+    print(''.join(s))
+
+
 def matching_parentheses(str):
     c = 0
     for char in str:
@@ -48,10 +90,19 @@ def coin_flip_normal_approx(num_flips, num_heads):
 if __name__ == '__main__':
     #inp = input("#>")
     #print(matching_parentheses(inp))
+
     #num_list = [x for x in range(101)]
     #del num_list[random.randint(0,99)]
     #print(num_list)
     #print(find_missing_no(num_list))
-    print(coin_flip_probability(400, 220) * 100)
-    print(coin_flip_normal_approx(400, 220) * 100)
-    
+
+    #print(coin_flip_probability(400, 220) * 100)
+    #print(coin_flip_normal_approx(400, 220) * 100)
+
+    #reverse_in_place("Hello, World!")
+
+    #first_unique("abpcsdadpbc")
+
+    #ex1 = [5, 4, 3, 6, 0, 1]
+    ex2 = [3, 1, 4, 1, 5, 1, 6, 1]
+    melt_histogram(ex2)
