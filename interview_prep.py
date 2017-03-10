@@ -55,13 +55,17 @@ def matching_parentheses(str):
     return c == 0
 
 # better than linear time using modified binary search
-# def find_missing_no(lst, left=0, right=(len(lst)-1), length=len(lst)):
-#     if right <= left+1:
-#         return left+1
-#     else:
-#         mid = (left+right) // 2
-#         if mid - left != lst[mid] - lst[left]:
-#             return find_missing_no
+def find_missing_no(lst, left, right):
+
+    # base case, ex: [4, 6]
+    if right <= left+1:
+        return left+1
+    else:
+        mid = left + (right - left)//2
+        if lst[mid] - lst[left] != mid - left:
+            return find_missing_no(lst, left, mid)
+        elif lst[right] - lst[mid] != right - mid:
+            return find_missing_no(lst, mid+1, right)
 
 def coin_flip_probability(num_flips, num_heads):
     # given n flips, k heads, probability is:
@@ -91,10 +95,11 @@ if __name__ == '__main__':
     #inp = input("#>")
     #print(matching_parentheses(inp))
 
-    #num_list = [x for x in range(101)]
-    #del num_list[random.randint(0,99)]
-    #print(num_list)
-    #print(find_missing_no(num_list))
+    num_list = [x for x in range(101)]
+    rand_ind = random.randint(0,99)
+    print(num_list[rand_ind])
+    del num_list[rand_ind]
+    print(find_missing_no(num_list, 0, len(num_list)-1))
 
     #print(coin_flip_probability(400, 220) * 100)
     #print(coin_flip_normal_approx(400, 220) * 100)
@@ -104,5 +109,5 @@ if __name__ == '__main__':
     #first_unique("abpcsdadpbc")
 
     #ex1 = [5, 4, 3, 6, 0, 1]
-    ex2 = [3, 1, 4, 1, 5, 1, 6, 1]
-    melt_histogram(ex2)
+    # ex2 = [3, 1, 4, 1, 5, 1, 6, 1]
+    # melt_histogram(ex2)
